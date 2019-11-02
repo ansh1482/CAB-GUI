@@ -109,6 +109,21 @@ class SignUp extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equals("Cancel"))
+        if(e.getActionCommand().equals("CANCEL")) {
+            Login l = new Login();
+            add(l.panel,BorderLayout.CENTER);
+            setSize(500,300);
+            setContentPane(l.panel);
+            setVisible(true);
+            setTitle("LOGIN FORM");
+        }
+        else {
+            Login l = new Login();
+            add(l.panel,BorderLayout.CENTER);
+            setSize(500,300);
+            setContentPane(l.panel);
+            setVisible(true);
+            setTitle("LOGIN FORM");
+        }
     }
 }
