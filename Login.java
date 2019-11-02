@@ -107,8 +107,5 @@ class SignUp extends JFrame implements ActionListener {
         CANCEL.addActionListener(this);
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equals("Cancel"))
-    }
+
 }
