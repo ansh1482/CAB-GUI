@@ -1,5 +1,6 @@
 package com.signUp;
 
+import LoginMain.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -25,9 +26,9 @@ public class Login extends JFrame implements ActionListener
         text2 = new JPasswordField(30);
         text2.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
 
-        SUBMIT = new JButton("SUBMIT");
-        SIGNUP = new JButton("SIGNUP");
-        panel = new JPanel(new GridLayout(3,1));
+        SUBMIT=new JButton("SUBMIT");
+        SIGNUP=new JButton("SIGNUP");
+        panel=new JPanel(new GridLayout(3,1));
         panel.add(label1);
         panel.add(text1);
         panel.add(label2);
@@ -79,28 +80,52 @@ public class Login extends JFrame implements ActionListener
 class SignUp extends JFrame implements ActionListener {
     JButton SUBMIT, CANCEL;
     JPanel panel;
-    JLabel label1, label2;
-    JTextField  user, pass;
+    JLabel userid, passwd,name,emailid,phoneno,error;
+    JTextField  usertxt, passtxt,nametxt,phonetxt,emailidtxt;
     public void signUp() {
-        label1 = new JLabel();
-        label1.setText("              Username:");
-        user = new JTextField(30);
-        user.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        label1.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
+        userid = new JLabel();
+        userid.setText("              Username:");
+        usertxt = new JTextField(30);
+        usertxt.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
+        userid.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
 
-        label2 = new JLabel();
-        label2.setText("              Password:");
-        pass = new JPasswordField(30);
-        label2.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
-        pass.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
+        passwd = new JLabel();
+        passwd.setText("              Password:");
+        passtxt = new JPasswordField(30);
+        passwd.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
+        passtxt.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
+
+        name = new JLabel();
+        name.setText("              Name:");
+        nametxt = new JTextField(30);
+        nametxt.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
+        name.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
+
+        emailid = new JLabel();
+        emailid.setText("              EmailId:");
+        emailidtxt = new JTextField(30);
+        emailidtxt.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
+        emailid.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
+
+        phoneno = new JLabel();
+        phoneno.setText("              Phone No:");
+        phonetxt = new JTextField(30);
+        phonetxt.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
+        phoneno.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
 
         SUBMIT = new JButton("SUBMIT");
         CANCEL = new JButton("CANCEL");
-        panel = new JPanel(new GridLayout(3, 1));
-        panel.add(label1);
-        panel.add(user);
-        panel.add(label2);
-        panel.add(pass);
+        panel = new JPanel(new GridLayout(7, 1));
+        panel.add(name);
+        panel.add(nametxt);
+        panel.add(emailid);
+        panel.add(emailidtxt);
+        panel.add(phoneno);
+        panel.add(phonetxt);
+        panel.add(userid);
+        panel.add(usertxt);
+        panel.add(passwd);
+        panel.add(passtxt);
         panel.add(SUBMIT);
         panel.add(CANCEL);
         SUBMIT.addActionListener(this);
@@ -109,21 +134,7 @@ class SignUp extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(e.getActionCommand().equals("CANCEL")) {
-            Login l = new Login();
-            add(l.panel,BorderLayout.CENTER);
-            setSize(500,300);
-            setContentPane(l.panel);
-            setVisible(true);
-            setTitle("LOGIN FORM");
-        }
-        else {
-            Login l = new Login();
-            add(l.panel,BorderLayout.CENTER);
-            setSize(500,300);
-            setContentPane(l.panel);
-            setVisible(true);
-            setTitle("LOGIN FORM");
-        }
+
     }
 }
+
