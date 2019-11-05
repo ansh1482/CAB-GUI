@@ -1,18 +1,26 @@
 package com.signUp;
-
+import com.mainPage.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.*;
+import com.main.*;
 
-public class Login extends JFrame implements ActionListener
+public class Login implements ActionListener
 {
+    JFrame frame;
     JButton SUBMIT,SIGNUP;
-    JPanel panel;
+    public JPanel panel;
     JLabel label1,label2;
     final JTextField  text1,text2;
-    public Login()
+    public Login(JFrame frame)
     {
+        this.frame = frame;
         label1 = new JLabel();
         label1.setText("              Username:");
         label1.setFont(new Font("Helvetica Neue", Font.PLAIN, 20));
@@ -34,39 +42,50 @@ public class Login extends JFrame implements ActionListener
         panel.add(text2);
         panel.add(SUBMIT);
         panel.add(SIGNUP);
-        add(panel,BorderLayout.CENTER);
+        frame.add(panel,BorderLayout.CENTER);
         SUBMIT.addActionListener(this);
         SIGNUP.addActionListener(this);
-        setTitle("LOGIN FORM");
+        frame.setTitle("LOGIN FORM");
     }
     public void actionPerformed(ActionEvent ae)
     {
         if(ae.getActionCommand().equals("SUBMIT")) {
-            String value1 = text1.getText();
-            String value2 = text2.getText();
-            if (value1.equals("roseindia") && value2.equals("roseindia")) {
-            } else {
-                System.out.println("enter a valid username and password");
-                JOptionPane.showMessageDialog(this, "Incorrect login or password", "Error", JOptionPane.ERROR_MESSAGE);
+            try {
+                PrintWriter out = new PrintWriter(LoginPage.sk.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(LoginPage.sk.getInputStream()));
+                BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+                out.println("login");
+                String value1 = text1.getText();
+                out.println(value1);
+                String value2 = text2.getText();
+                out.println(value2);
+                if (in.readLine().equals("successful")) {
+                    UserUI ui = new UserUI(frame);
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Incorrect login or password", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         } else {
-            SignUp sign = new SignUp();
-            sign.signUp();
-            add(sign.panel,BorderLayout.CENTER);
-            setSize(500,300);
-            setContentPane(sign.panel);
-            setVisible(true);
-            setTitle("SIGNUP FORM");
+            SignUp sign = new SignUp(frame);
+            frame.add(sign.panel,BorderLayout.CENTER);
+            frame.setSize(500,300);
+            frame.setContentPane(sign.panel);
+            frame.setVisible(true);
+            frame.setTitle("SIGNUP FORM");
         }
     }
 }
 
-class SignUp extends JFrame implements ActionListener {
+class SignUp implements ActionListener {
+    JFrame frame;
     JButton SUBMIT, CANCEL;
     JPanel panel;
-    JLabel userid, passwd,name,emailid,phoneno,error;
+    JLabel userid, passwd,name,emailid,phoneno;
     JTextField  usertxt, passtxt,nametxt,phonetxt,emailidtxt;
-    public void signUp() {
+    public SignUp(JFrame frame) {
+        this.frame = frame;
         userid = new JLabel();
         userid.setText("              Username:");
         usertxt = new JTextField(30);
@@ -100,7 +119,7 @@ class SignUp extends JFrame implements ActionListener {
 
         SUBMIT = new JButton("SUBMIT");
         CANCEL = new JButton("CANCEL");
-        panel = new JPanel(new GridLayout(7, 1));
+        panel = new JPanel(new GridLayout(6, 1));
         panel.add(name);
         panel.add(nametxt);
         panel.add(emailid);
@@ -120,20 +139,45 @@ class SignUp extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("CANCEL")) {
-            Login l = new Login();
-            add(l.panel,BorderLayout.CENTER);
-            setSize(500,300);
-            setContentPane(l.panel);
-            setVisible(true);
-            setTitle("LOGIN FORM");
+            Login l = new Login(frame);
+            frame.add(l.panel,BorderLayout.CENTER);
+            frame.setSize(500,300);
+            frame.setContentPane(l.panel);
+            frame.setVisible(true);
+            frame.setTitle("LOGIN FORM");
         }
         else {
-            Login l = new Login();
-            add(l.panel,BorderLayout.CENTER);
-            setSize(500,300);
-            setContentPane(l.panel);
-            setVisible(true);
-            setTitle("LOGIN FORM");
+            try {
+                PrintWriter out = new PrintWriter(LoginPage.sk.getOutputStream(), true);
+                BufferedReader in = new BufferedReader(new InputStreamReader(LoginPage.sk.getInputStream()));
+                out.println("signup");
+                String uid, pass, usn, ph, email;
+                uid = usertxt.getText();
+                pass = passtxt.getText();
+                usn = nametxt.getText();
+                ph = phonetxt.getText();
+                email = emailidtxt.getText();
+                out.println(uid);
+                out.println(pass);
+                out.println(usn);
+                out.println(ph);
+                out.println(email);
+                String s = in.readLine();
+                if (s.equals("successful")) {
+                    UserUI ui = new UserUI(frame);
+                } else {
+                     do {
+                         if(s.equals("userid taken"))
+                             JOptionPane.showMessageDialog(frame, "Userid already exists", "Error", JOptionPane.ERROR_MESSAGE);
+                         if(s.equals("phone number taken"))
+                             JOptionPane.showMessageDialog(frame, "phone number already exists", "Error", JOptionPane.ERROR_MESSAGE);
+                         if(s.equals("emailid taken"))
+                             JOptionPane.showMessageDialog(frame, "email id already exists", "Error", JOptionPane.ERROR_MESSAGE);
+                    }while ((s = in.readLine()).equals("errors finished") == false);
+                }
+            } catch(Exception ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }
